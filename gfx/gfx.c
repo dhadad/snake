@@ -212,3 +212,9 @@ void gfx_flush()
 	XFlush(gfx_display);
 }
 
+/* Closes connection to X server. */
+
+void gfx_close()
+{
+	XCloseDisplay(gfx_display);
+}

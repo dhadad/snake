@@ -51,4 +51,7 @@ int gfx_event_waiting();
 /* Flush all previous output to the window. */
 void gfx_flush();
 
+/* Closes connection to X server. */
+void gfx_close();
+
 #endif

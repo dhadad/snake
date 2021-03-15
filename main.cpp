@@ -152,5 +152,6 @@ int main() {
 		if (get_input.joinable())
 			get_input.join();
 	}
+	gfx_close();
 	return 0;
 }
