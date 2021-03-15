@@ -10,6 +10,7 @@ direction Vertex::getDirectionFromChar(char c) {
         case 's': return DOWN;
         case 'd': return RIGHT;
         case 'a': return LEFT;
+        case 'q': return EXIT;
         default: return NONE;
     }
 }

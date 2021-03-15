@@ -1,12 +1,13 @@
 #ifndef VERTEX_H_
 #define VERTEX_H_
 
+#include "assert.h"
 #include "exceptions.h"
 
 const int height = 321;
 const int width = 481;
 const int jump = 8;
-typedef enum {UP, DOWN, LEFT, RIGHT, NONE} direction;
+typedef enum {UP, DOWN, LEFT, RIGHT, NONE, EXIT} direction;
 
 class Vertex {
     int x, y;

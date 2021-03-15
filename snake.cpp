@@ -24,10 +24,19 @@ Snake& Snake::operator+=(const Vertex& vertex) {
     return *this;
 }
 
-Snake& Snake::operator--() {
-    chain.pop_back();
-    score--;
+Snake& Snake::operator-=(int disqualifications) {
+    assert(disqualifications >= 0);
+    for (int i = 0; i < disqualifications; ++i) {
+        chain.pop_back();
+        lives--;
+        if (lives < 0)
+            throw NoLivesLeft();
+    }
     return *this;
+}
+
+Snake& Snake::operator--() {
+    return this->operator-=(1);
 }
 
 Vertex& Snake::operator[](int index){ //Allows editing
@@ -37,6 +46,10 @@ Vertex& Snake::operator[](int index){ //Allows editing
 
 int Snake::getScore() const{
     return score;
+}
+
+int Snake::getLives() const {
+    return lives;
 }
 
 int Snake::length() const {

@@ -57,6 +57,8 @@ vector
 -
 
 /home/adar/git_repos/snake/vertex.h
+assert.h
+/home/adar/git_repos/snake/assert.h
 exceptions.h
 /home/adar/git_repos/snake/exceptions.h
 
