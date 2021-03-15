@@ -26,6 +26,8 @@ public:
     void damage();
     vector<Vertex>::iterator begin();
     vector<Vertex>::iterator end();
+    vector<Vertex>::const_iterator begin() const;
+    vector<Vertex>::const_iterator end() const;
 };
 
 #endif //SNAKE_H_

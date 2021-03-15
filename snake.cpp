@@ -63,3 +63,11 @@ vector<Vertex>::iterator Snake::begin() {
 vector<Vertex>::iterator Snake::end() {
     return chain.end();
 }
+
+vector<Vertex>::const_iterator Snake::begin() const {
+    return chain.begin();
+}
+
+vector<Vertex>::const_iterator Snake::end() const {
+    return chain.end();
+}

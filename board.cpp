@@ -20,17 +20,21 @@ vector<placeholder> Board::operator[](int index) const {
     return vec[index];
 }
 
-void Board::update(Vertex point, placeholder value) {
+void Board::update(const Vertex& point, const placeholder& value) {
     int x = point.getX() / jump, y = point.getY() / jump;
     vec[x][y] = value;
 }
 
 vector<int> Board::generateNewFruit() {
     int x = rand() % cols, y = rand() % rows;
-    while (vec[x][y] != EMPTY) {
+    while (vec[x][y] != placeholder::EMPTY) {
         x = rand() % cols, y = rand() % rows;
     }
     vec[x][y] = FRUIT;
     vector<int> coardinates {x, y};
     return coardinates;
+}
+
+bool Board::checkRowsRange(int index) {
+    return index < rows && index >= 0;
 }
