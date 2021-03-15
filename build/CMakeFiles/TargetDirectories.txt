@@ -1,0 +1,3 @@
+/home/adar/git_repos/snake/build/CMakeFiles/rebuild_cache.dir
+/home/adar/git_repos/snake/build/CMakeFiles/edit_cache.dir
+/home/adar/git_repos/snake/build/CMakeFiles/snake.dir

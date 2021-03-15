@@ -14,22 +14,34 @@ extern "C" {
 using std::thread;
 using std::string;
 
-enum color: int8_t {BLANK = 0, GREEN, WHITE};
+/* GLOBALS */
 
 std::mutex m;
 std::atomic<bool> done(false);
 
+/* AUXILIARIES */
+
+enum color: int8_t {BLANK = 0, GREEN, WHITE};
+
+/**
+ * setColor: choose the color of the next item to be drawn to the screen.
+ */
 void setColor(const color& c) {
 	switch (c) {
 		case GREEN: gfx_color(0,200,0);
 			break;
 		case WHITE: gfx_color(200,200,200);
 			break;
-		default: gfx_color(0,0,0); //BLACK
+		default: gfx_color(0,0,0); // Black
 			break;
 	}
 }
 
+/**
+ * updatePrintedScore: prints the current score.
+ * @param s A reference to the snake object.
+ * @param c Color to be used in printing the text.
+ */
 void updatePrintedScore(const Snake& s, const color& c) {
 	setColor(c);
 	string score = std::to_string(s.getScore());
@@ -37,6 +49,11 @@ void updatePrintedScore(const Snake& s, const color& c) {
 	gfx_flush();
 }
 
+/**
+ * updatePrintedLives: prints the current number of lives left.
+ * @param s A reference to the snake object.
+ * @param c Color to be used in printing the text.
+ */
 void updatePrintedLives(const Snake& s, const color& c) {
 	setColor(c);
 	string score = std::to_string(s.getLives());
@@ -44,6 +61,25 @@ void updatePrintedLives(const Snake& s, const color& c) {
 	gfx_flush();
 }
 
+/**
+ * printSnake: prints the location of the vertices the snake consists of.
+ * '@' will be used to identify the snake.
+ * @param s A reference to the snake object.
+ * @param c Color to be used in printing the text.
+ */
+void printSnake(const Snake& s, const color& c) {
+	setColor(c);
+	for (auto i = s.begin(); i != s.end(); ++i) {
+		gfx_text("@", i->getX(), i->getY());
+	}
+	gfx_flush();
+}
+
+/**
+ * initBoard: initialize the game window.
+ * @param s A reference to the snake object.
+ * @param b A reference to the board object.
+ */
 void initBoard(const Snake& s, const Board& b) {
 	gfx_open(width,height+jump*2,"Snake");
 	setColor(WHITE);
@@ -58,14 +94,10 @@ void initBoard(const Snake& s, const Board& b) {
 				gfx_text("P", x*jump, y*jump);
 }
 
-void printSnake(const Snake& s, const color& c) {
-	setColor(c);
-	for (auto i = s.begin(); i != s.end(); ++i) {
-		gfx_text("@", i->getX(), i->getY());
-	}
-	gfx_flush();
-}
-
+/**
+ * initBoard: prints a final message.
+ * @param message String to appear when the game ends.
+ */
 void closeGame(const char* message) {
 	setColor(WHITE);
 	gfx_text(message, width/3, height/2);
@@ -73,44 +105,88 @@ void closeGame(const char* message) {
 	gfx_flush();
 }
 
+
+/**
+ * snakeEat: the snake steps into a fruit.
+ * @param s A reference to the snake object.
+ * @param b A reference to the board object.
+ * @param old_tail A reference to the vertex where the snake's old tail is located.
+ * @param new_head A refrence to the vertex where the snake's head is going to be
+ * after the current step.
+ */
+void snakeEat(Snake& s, Board& b, const Vertex& old_tail, const Vertex& new_head) {
+	gfx_text("P", new_head.getX(), new_head.getY()); //Removes the fruit from the map
+	s.advance();
+	b.update(new_head, SNAKE);
+	updatePrintedScore(s, BLANK);
+	s+=old_tail; //Increases by one
+	updatePrintedScore(s, WHITE);
+	vector<int> fruit_coardinates = b.generateNewFruit();
+	setColor(WHITE);
+	gfx_text("P", fruit_coardinates[0]*jump, fruit_coardinates[1]*jump);
+}
+
+/**
+ * snakeSelfCross: the snake steps into itself.
+ * @param s A reference to the snake object.
+ * @param b A reference to the board object.
+ * @param old_tail A reference to the vertex where the snake's old tail is located.
+ * @param new_head A refrence to the vertex where the snake's head is going to be
+ * after the current step.
+ */
+void snakeSelfCross(Snake& s, Board& b, const Vertex& old_tail, const Vertex& new_head) {
+	b.update(old_tail, EMPTY);
+	s.advance();
+	Vertex new_tail = s[s.length()-1];
+	updatePrintedLives(s, BLANK);
+	--s;
+	updatePrintedLives(s, WHITE);
+	b.update(new_tail, EMPTY);
+	b.update(new_head, SNAKE);
+}
+
+/**
+ * snakeStep: the snake steps into a empty place.
+ * @param s A reference to the snake object.
+ * @param b A reference to the board object.
+ * @param old_tail A reference to the vertex where the snake's old tail is located.
+ * @param new_head A refrence to the vertex where the snake's head is going to be
+ * after the current step.
+ */
+void snakeStep(Snake& s, Board& b, const Vertex& old_tail, const Vertex& new_head) {
+	b.update(old_tail, EMPTY);
+	s.advance();
+	b.update(new_head, SNAKE);
+}
+
+/**
+ * advanceEverySec: make a step every contant amount of time.
+ * Stops when there are no lives left, or when the snakes exits the screen.
+ * @param s A reference to the snake object.
+ * @param b A reference to the board object.
+ */
 void advanceEverySec(Snake& s, Board& b) {
 	while(!done.load()) {
 		m.lock();
 		try {
-			Vertex old_tail = s[s.length()-1]; //Uses copy c'tor
+			Vertex old_tail = s[s.length()-1]; 
 			Vertex new_head = s[0].peekStep();
+			int coar_x = new_head.getX() / jump, coar_y = new_head.getY() / jump;
+			if (!b.checkRowsRange(coar_y)) 
+				throw OutOfRange();
 			printSnake(s, BLANK);
-			if (!b.checkRowsRange(new_head.getY() / jump)) throw OutOfRange();
-			if (b[new_head.getX() / jump][new_head.getY() / jump] == FRUIT) {//Next step has a fruit
-				gfx_text("P", new_head.getX(), new_head.getY()); //Removes the fruit from the map
-				s.advance();
-				b.update(new_head, SNAKE);
-				updatePrintedScore(s, BLANK);
-				s+=old_tail; //Increases by one
-				updatePrintedScore(s, WHITE);
-				vector<int> fruit_coardinates = b.generateNewFruit();
-				setColor(WHITE);
-				gfx_text("P", fruit_coardinates[0]*jump, fruit_coardinates[1]*jump);
-			} else if (b[new_head.getX() / jump][new_head.getY() / jump] == SNAKE) {
-				b.update(old_tail, EMPTY);
-				s.advance();
-				Vertex new_tail = s[s.length()-1];
-				updatePrintedLives(s, BLANK);
-				--s;
-				updatePrintedLives(s, WHITE);
-				b.update(new_tail, EMPTY);
-				b.update(new_head, SNAKE);
+			if (b[coar_x][coar_y] == FRUIT) {
+				snakeEat(s, b, old_tail, new_head);		// A fruit is located in the next step
+			} else if (b[coar_x][coar_y] == SNAKE) {
+				snakeSelfCross(s, b, old_tail, new_head);	// The snake crosses itself
 			} else {
-				b.update(old_tail, EMPTY);
-				s.advance();
-				b.update(new_head, SNAKE);
+				snakeStep(s, b, old_tail, new_head);	// A regular step
 			}
 			printSnake(s, GREEN);
 		} catch(const OutOfRange& e ) {
 			closeGame("OUT OF RANGE!");
 			m.unlock();
 			break;
-
 		} catch(const NoLivesLeft& e) {
 			closeGame("NO LIVES LEFT!");
 			m.unlock();
@@ -125,6 +201,12 @@ void advanceEverySec(Snake& s, Board& b) {
 	}
 }
 
+/**
+ * waitForInput: reads charaters enters by the user.
+ * 'w' is used to move up, 's' to move down, 'a' for left and 'd' for right. 
+ * 'q' is used in order to exit the program.
+ * @param s A reference to the snake object.
+ */
 void waitForInput(Snake& s) {
 	char c = ' ';
 	while(Vertex::getDirectionFromChar(c) == NONE || Vertex::getDirectionFromChar(c) == s.getDirection() || \

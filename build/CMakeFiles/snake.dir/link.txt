@@ -1,0 +1,1 @@
+/usr/bin/g++ -std=c++11 -Wall -Werror -pedantic-errors -Igfx -lX11 -lm -pthread -DNDEBUG -g -rdynamic CMakeFiles/snake.dir/main.cpp.o CMakeFiles/snake.dir/vertex.cpp.o CMakeFiles/snake.dir/snake.cpp.o CMakeFiles/snake.dir/board.cpp.o -o snake   -L/home/adar/git_repos/snake/gfx  -Wl,-rpath,/home/adar/git_repos/snake/gfx -lgfx 

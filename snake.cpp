@@ -39,7 +39,7 @@ Snake& Snake::operator--() {
     return this->operator-=(1);
 }
 
-Vertex& Snake::operator[](int index){ //Allows editing
+Vertex& Snake::operator[](int index){ 
     if (index < 0 || index >= (int)chain.size()) throw OutOfRange();
     return chain[index];
 }
