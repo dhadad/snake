@@ -20,7 +20,7 @@ extern "C" {
 
 std::mutex m;
 std::atomic<bool> done(false);
-enum color: int8_t {GREEN, BLANK, WHITE};
+enum color: int8_t {BLANK = 0, GREEN, WHITE};
 
 void setColor(const color& c) {
 	switch (c) {
@@ -57,7 +57,7 @@ void initBoard(const Snake& s, const Board& b) {
 	updatePrintedLives(s, WHITE);
 	for (int x = 0; x < b.getCols(); ++x)
 		for(int y = 0; y < b.getRows(); ++y)
-			if (b[x][y] == placeholder::FRUIT)
+			if (b[x][y] == FRUIT)
 				gfx_text("P", x*jump, y*jump);
 }
 
@@ -84,29 +84,29 @@ void advanceEverySec(Snake& s, Board& b) {
 			Vertex new_head = s[0].peekStep();
 			printSnake(s, BLANK);
 			if (!b.checkRowsRange(new_head.getY() / jump)) throw OutOfRange();
-			if (b[new_head.getX() / jump][new_head.getY() / jump] == placeholder::FRUIT) {//Next step has a fruit
+			if (b[new_head.getX() / jump][new_head.getY() / jump] == FRUIT) {//Next step has a fruit
 				gfx_text("P", new_head.getX(), new_head.getY()); //Removes the fruit from the map
 				s.advance();
-				b.update(new_head, placeholder::SNAKE);
+				b.update(new_head, SNAKE);
 				updatePrintedScore(s, BLANK);
 				s+=old_tail; //Increases by one
 				updatePrintedScore(s, WHITE);
 				vector<int> fruit_coardinates = b.generateNewFruit();
 				setColor(WHITE);
 				gfx_text("P", fruit_coardinates[0]*jump, fruit_coardinates[1]*jump);
-			} else if (b[new_head.getX() / jump][new_head.getY() / jump] == placeholder::SNAKE) {
-				b.update(old_tail, placeholder::EMPTY);
+			} else if (b[new_head.getX() / jump][new_head.getY() / jump] == SNAKE) {
+				b.update(old_tail, EMPTY);
 				s.advance();
 				Vertex new_tail = s[s.length()-1];
 				updatePrintedLives(s, BLANK);
 				--s;
 				updatePrintedLives(s, WHITE);
-				b.update(new_tail, placeholder::EMPTY);
-				b.update(new_head, placeholder::SNAKE);
+				b.update(new_tail, EMPTY);
+				b.update(new_head, SNAKE);
 			} else {
-				b.update(old_tail, placeholder::EMPTY);
+				b.update(old_tail, EMPTY);
 				s.advance();
-				b.update(new_head, placeholder::SNAKE);
+				b.update(new_head, SNAKE);
 			}
 			printSnake(s, GREEN);
 		} catch(const OutOfRange& e ) {

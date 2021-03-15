@@ -7,7 +7,7 @@
 const int height = 321;
 const int width = 481;
 const int jump = 8;
-typedef enum {UP, DOWN, LEFT, RIGHT, NONE, EXIT} direction;
+enum direction: int {NONE = 0, UP, DOWN, LEFT, RIGHT, EXIT};
 
 class Vertex {
     int x, y;
@@ -29,11 +29,5 @@ public:
     static direction getDirectionFromChar(char c);
     static bool oppositeDirections(direction first, direction second);
 };
-/*
-Vertex operator+(const Vertex& left, const Vertex& right) {
-    Vertex result = Vertex(left);
-    result += right;
-    return result;
-}*/
 
 #endif //VERTEX_H_

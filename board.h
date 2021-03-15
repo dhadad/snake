@@ -15,16 +15,16 @@ class Board {
     int rows, cols;
     vector<vector<placeholder>> vec;
 public:
-    Board(Snake& s): rows((height -1) / jump), cols((width -1) / jump), vec(cols, vector<placeholder>(rows, placeholder::EMPTY)) {
+    Board(Snake& s): rows((height -1) / jump), cols((width -1) / jump), vec(cols, vector<placeholder>(rows, EMPTY)) {
         for (vector<Vertex>::iterator i = s.begin(); i != s.end(); ++i) {
-            vec[i->getY()/rows][i->getX()/cols] = placeholder::SNAKE;
+            vec[i->getY()/rows][i->getX()/cols] = SNAKE;
 	    }
         srand((unsigned int)time(NULL));
         for (int i = 0; i < fruitsNum; ++i) {
             int x = rand() % cols;
             int y = rand() % rows;
-            if (vec[x][y] != placeholder::EMPTY) i--;
-            else vec[x][y] = placeholder::FRUIT;
+            if (vec[x][y] != EMPTY) i--;
+            else vec[x][y] = FRUIT;
         }
     }
     int getRows() const;
