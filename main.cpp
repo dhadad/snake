@@ -18,6 +18,7 @@ using std::string;
 
 std::mutex m;
 std::atomic<bool> done(false);
+static int speed = 350;
 
 /* AUXILIARIES */
 
@@ -95,7 +96,7 @@ void initBoard(const Snake& s, const Board& b) {
 }
 
 /**
- * initBoard: prints a final message.
+ * closeGame: prints a final message.
  * @param message String to appear when the game ends.
  */
 void closeGame(const char* message) {
@@ -196,7 +197,7 @@ void advanceEverySec(Snake& s, Board& b) {
 			m.unlock();
 			break;
 		}
-		std::this_thread::sleep_for(std::chrono::milliseconds(350));
+		std::this_thread::sleep_for(std::chrono::milliseconds(speed));
 		m.unlock();
 	}
 }
@@ -228,8 +229,10 @@ int main() {
 	advancing.detach();
 	while (!done.load()) {
 		thread get_input(waitForInput, std::ref(s));
-		if (get_input.joinable())
+		if (get_input.joinable()) {
 			get_input.join();
+			std::this_thread::sleep_for(std::chrono::milliseconds(speed));
+		}
 	}
 	gfx_close();
 	return 0;
