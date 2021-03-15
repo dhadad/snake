@@ -6,7 +6,7 @@ The graphical interface is based on XLib, through the following wrapper, written
 
 ## Compiling
 gfx v2 was compiled (into *gfx/libgfx.a*) using GCC 10.2.1 with the following flags:
-> -fPIC -c -lX11 -lm -pthread
+> -fPIC -c -lX11 -lm -pthread -DNDEBUG
 
 For the compilation of the game itself, those flags were used:
 
