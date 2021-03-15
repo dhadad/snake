@@ -216,5 +216,14 @@ void gfx_flush()
 
 void gfx_close()
 {
-	XCloseDisplay(gfx_display);
+	gfx_clear();
+//	if (!gfx_gc) {
+		XFreeGC(gfx_display, gfx_gc);
+//	}
+//	if (!gfx_window) {
+		XDestroyWindow(gfx_display, gfx_window);
+//	}
+//	if (!gfx_display) {
+		XCloseDisplay(gfx_display);
+	//}
 }

@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I/home/adar/git_repos/snake/gfx
 
-CXX_FLAGS = -std=c++11 -Wall -Werror -g -pedantic-errors -Igfx -lX11 -lm -pthread -g
+CXX_FLAGS = -std=c++11 -Wall -Werror -pedantic-errors -Igfx -lX11 -lm -pthread -DNDEBUG -g
 
