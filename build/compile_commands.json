@@ -1,0 +1,22 @@
+[
+{
+  "directory": "/home/adar/git_repos/snake/build",
+  "command": "/usr/bin/g++  -I/home/adar/git_repos/snake/gfx -std=c++11 -Wall -Werror -pedantic-errors -Igfx -lX11 -lm -pthread -g -o CMakeFiles/snake.dir/main.cpp.o -c /home/adar/git_repos/snake/main.cpp",
+  "file": "/home/adar/git_repos/snake/main.cpp"
+},
+{
+  "directory": "/home/adar/git_repos/snake/build",
+  "command": "/usr/bin/g++  -I/home/adar/git_repos/snake/gfx -std=c++11 -Wall -Werror -pedantic-errors -Igfx -lX11 -lm -pthread -g -o CMakeFiles/snake.dir/vertex.cpp.o -c /home/adar/git_repos/snake/vertex.cpp",
+  "file": "/home/adar/git_repos/snake/vertex.cpp"
+},
+{
+  "directory": "/home/adar/git_repos/snake/build",
+  "command": "/usr/bin/g++  -I/home/adar/git_repos/snake/gfx -std=c++11 -Wall -Werror -pedantic-errors -Igfx -lX11 -lm -pthread -g -o CMakeFiles/snake.dir/snake.cpp.o -c /home/adar/git_repos/snake/snake.cpp",
+  "file": "/home/adar/git_repos/snake/snake.cpp"
+},
+{
+  "directory": "/home/adar/git_repos/snake/build",
+  "command": "/usr/bin/g++  -I/home/adar/git_repos/snake/gfx -std=c++11 -Wall -Werror -pedantic-errors -Igfx -lX11 -lm -pthread -g -o CMakeFiles/snake.dir/board.cpp.o -c /home/adar/git_repos/snake/board.cpp",
+  "file": "/home/adar/git_repos/snake/board.cpp"
+}
+]
