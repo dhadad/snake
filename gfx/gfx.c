@@ -71,7 +71,7 @@ void gfx_open( int width, int height, const char *title )
 	gfx_colormap = DefaultColormap(gfx_display,0);
 
 	XSetForeground(gfx_display, gfx_gc, whiteColor);
-
+	XInitThreads();
 	// Wait for the MapNotify event
 
 	for(;;) {
@@ -215,15 +215,10 @@ void gfx_flush()
 /* Closes connection to X server. */
 
 void gfx_close()
-{
-	gfx_clear();
-//	if (!gfx_gc) {
-		XFreeGC(gfx_display, gfx_gc);
-//	}
-//	if (!gfx_window) {
-		XDestroyWindow(gfx_display, gfx_window);
-//	}
-//	if (!gfx_display) {
-		XCloseDisplay(gfx_display);
-	//}
+{	
+	//XEvent event;
+	//while(XCheckMaskEvent(gfx_display, -1, &event)) {} //Empty events queue
+	XFreeGC(gfx_display, gfx_gc);
+	XDestroyWindow(gfx_display, gfx_window);
+	XCloseDisplay(gfx_display);
 }

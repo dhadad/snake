@@ -1,26 +1,23 @@
-#include <stdio.h>
-#include <stdbool.h>
 #include <string>
-#include <stdexcept> 
 #include <atomic>
 #include <mutex>
-#include <iostream>
 #include <chrono>
 #include <thread> 
 #include "vertex.h"
 #include "snake.h"
 #include "board.h"
 
-using std::thread;
-using std::string;
-
 extern "C" {
 	#include "gfx/gfx.h"
 }
 
+using std::thread;
+using std::string;
+
+enum color: int8_t {BLANK = 0, GREEN, WHITE};
+
 std::mutex m;
 std::atomic<bool> done(false);
-enum color: int8_t {BLANK = 0, GREEN, WHITE};
 
 void setColor(const color& c) {
 	switch (c) {
@@ -78,7 +75,7 @@ void closeGame(const char* message) {
 
 void advanceEverySec(Snake& s, Board& b) {
 	while(!done.load()) {
-		m.lock(); //???
+		m.lock();
 		try {
 			Vertex old_tail = s[s.length()-1]; //Uses copy c'tor
 			Vertex new_head = s[0].peekStep();
@@ -134,7 +131,7 @@ void waitForInput(Snake& s) {
 			Vertex::oppositeDirections(Vertex::getDirectionFromChar(c), s.getDirection())) {
 		c = gfx_wait();
 		if (Vertex::getDirectionFromChar(c) == EXIT) {
-			done=true;
+			done = true;
 			return;
 		}
 	}
