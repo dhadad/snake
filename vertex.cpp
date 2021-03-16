@@ -57,7 +57,7 @@ Vertex& Vertex::step() {
     return *this;
 }
 
-Vertex Vertex::peekStep() {
+Vertex Vertex::peekStep() const {
     Vertex next = Vertex(*this);
     return next.step();
 }
