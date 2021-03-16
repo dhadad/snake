@@ -106,7 +106,6 @@ void closeGame(const char* message) {
 	gfx_flush();
 }
 
-
 /**
  * snakeEat: the snake steps into a fruit.
  * @param s A reference to the snake object.
@@ -183,11 +182,11 @@ void advanceEverySec(Snake& s, Board& b) {
 				throw OutOfRange();
 			printSnake(s, BLANK);
 			if (b[coar_x][coar_y] == FRUIT) {
-				snakeEat(s, b, old_tail, new_head);		// A fruit is located in the next step
+				snakeEat(s, b, old_tail, new_head);	// Fruit in the next step
 			} else if (b[coar_x][coar_y] == SNAKE) {
-				snakeSelfCross(s, b);	// The snake crosses itself
+				snakeSelfCross(s, b); // The snake crosses itself
 			} else {
-				snakeStep(s, b, old_tail, new_head);	// A regular step
+				snakeStep(s, b, old_tail, new_head); // A regular step
 			}
 			printSnake(s, GREEN);
 		} catch(const OutOfRange& e ) {
@@ -209,7 +208,7 @@ void advanceEverySec(Snake& s, Board& b) {
 }
 
 /**
- * waitForInput: reads charaters enters by the user.
+ * waitForInput: reads charaters entered by the user.
  * 'w' is used to move up, 's' to move down, 'a' for left and 'd' for right. 
  * 'q' is used in order to exit the program.
  * @param s A reference to the snake object.
