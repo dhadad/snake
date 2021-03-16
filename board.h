@@ -29,13 +29,46 @@ public:
             else vec[x][y] = FRUIT;
         }
     }
-    void removeSnake(const Snake &);
+    /** removeSnake: given a snake, remove its location from the board.
+     * @param s A reference to a snake object.
+     */
+    void removeSnake(const Snake& s);
+    /** getRows: how many rows the board consists of.
+     * @return Integer represting number of rows.
+     */
     int getRows() const;
+    /** getCols: how many coloumns the board consists of.
+     * @return Integer represting number of coloumns.
+     */
     int getCols() const;
+    /** operator[]: used in order to access a specific coloumn.
+     * @param this mutable board.
+     * @param index integer (must be in the valid range for a coloumn in the board).
+     * @return A reference to the vector used to store the information regarding 
+     * the wanted coloumn in the board.
+     */
     vector<placeholder>& operator[](int index);
+    /** operator[]: used in order to access a specific coloumn.
+     * @param this constant board.
+     * @param index integer (must be in the valid range for a coloumn in the board).
+     * @return A copy of the vector used to store the information regarding 
+     * the wanted coloumn in the board.
+     */
     vector<placeholder> operator[](int index) const;
+    /** update: change the value in a specific cell
+     * @param this mutable board.
+     * @param point a reference to a vertex, which stores the relevant coardinates.
+     * @param value the value to replace the current one.
+     */
     void update(const Vertex& point, const placeholder& value);
+    /** generateNewFruit: randomly place a new fruit in the board.
+     * @return vector of 2 integers, the x, y coardinates of the new fruit.
+     */
     vector<int> generateNewFruit();
+    /** checkRowsRange: checks if a given integer is a valid row number.
+     * @param index integer to be used to access a specific row
+     * @return true if it is indeed a valid row, false otherwise.
+     */
     bool checkRowsRange(int index);
 };
 

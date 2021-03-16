@@ -238,8 +238,8 @@ int main() {
 		thread get_input(waitForInput, std::ref(s));
 		if (get_input.joinable()) {
 			get_input.join();
-			std::this_thread::sleep_for(std::chrono::milliseconds(speed));
 		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(speed));
 	}
 	gfx_close();
 	return 0;

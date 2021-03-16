@@ -13,7 +13,7 @@ void Snake::changeDirection(direction new_direction) {
     chain[0].dir = new_direction;
 }
 
-direction Snake::getDirection() {
+direction Snake::getDirection() const {
     if (chain.empty()) throw EmptySnake();
     return chain[0].dir;
 }
