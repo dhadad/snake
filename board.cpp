@@ -1,5 +1,11 @@
 #include "board.h"
 
+void Board::removeSnake(const Snake& s) {
+    for (auto i = s.begin(); i != s.end(); ++i) {
+        vec[i->getY()/rows][i->getX()/cols] = EMPTY;
+    }
+}
+
 int Board::getRows() const {
     return rows;
 }

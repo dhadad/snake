@@ -128,22 +128,28 @@ void snakeEat(Snake& s, Board& b, const Vertex& old_tail, const Vertex& new_head
 }
 
 /**
- * snakeSelfCross: the snake steps into itself.
+ * snakeSelfCross: the snake steps into itself. The snake will start over from 
+ * the default location, with size 1.
  * @param s A reference to the snake object.
  * @param b A reference to the board object.
- * @param old_tail A reference to the vertex where the snake's old tail is located.
- * @param new_head A refrence to the vertex where the snake's head is going to be
- * after the current step.
  */
-void snakeSelfCross(Snake& s, Board& b, const Vertex& old_tail, const Vertex& new_head) {
-	b.update(old_tail, EMPTY);
-	s.advance();
-	Vertex new_tail = s[s.length()-1];
+void snakeSelfCross(Snake& s, Board& b) {
 	updatePrintedLives(s, BLANK);
-	--s;
+	b.removeSnake(s);
+	s.reset(); // snake of length 1
+	--s; // update lives
 	updatePrintedLives(s, WHITE);
-	b.update(new_tail, EMPTY);
-	b.update(new_head, SNAKE);
+	int coar_x = s[0].getX() / jump, coar_y = s[0].getY() / jump;
+	while (b[coar_x][coar_y] == FRUIT) {
+		// if a fruit exists in location, generate a replacement
+		setColor(BLANK);
+		gfx_text("P", s[0].getX(), s[0].getY()); 
+		b.update(s[0], EMPTY);
+		vector<int> fruit_coardinates = b.generateNewFruit();
+		setColor(WHITE);
+		gfx_text("P", fruit_coardinates[0]*jump, fruit_coardinates[1]*jump);
+	}
+	b.update(s[0], SNAKE);
 }
 
 /**
@@ -179,7 +185,7 @@ void advanceEverySec(Snake& s, Board& b) {
 			if (b[coar_x][coar_y] == FRUIT) {
 				snakeEat(s, b, old_tail, new_head);		// A fruit is located in the next step
 			} else if (b[coar_x][coar_y] == SNAKE) {
-				snakeSelfCross(s, b, old_tail, new_head);	// The snake crosses itself
+				snakeSelfCross(s, b);	// The snake crosses itself
 			} else {
 				snakeStep(s, b, old_tail, new_head);	// A regular step
 			}
@@ -210,7 +216,8 @@ void advanceEverySec(Snake& s, Board& b) {
  */
 void waitForInput(Snake& s) {
 	char c = ' ';
-	while(Vertex::getDirectionFromChar(c) == NONE || Vertex::getDirectionFromChar(c) == s.getDirection() || \
+	while(Vertex::getDirectionFromChar(c) == NONE || \
+			Vertex::getDirectionFromChar(c) == s.getDirection() || \
 			Vertex::oppositeDirections(Vertex::getDirectionFromChar(c), s.getDirection())) {
 		c = gfx_wait();
 		if (Vertex::getDirectionFromChar(c) == EXIT) {

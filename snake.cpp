@@ -27,7 +27,6 @@ Snake& Snake::operator+=(const Vertex& vertex) {
 Snake& Snake::operator-=(int disqualifications) {
     assert(disqualifications >= 0);
     for (int i = 0; i < disqualifications; ++i) {
-        chain.pop_back();
         lives--;
         if (lives < 0)
             throw NoLivesLeft();
@@ -54,6 +53,11 @@ int Snake::getLives() const {
 
 int Snake::length() const {
     return chain.size();
+}
+
+Snake& Snake::reset() {
+    chain = vector<Vertex>(1, Vertex(default_x, default_y, default_dir));
+    return *this;
 }
 
 vector<Vertex>::iterator Snake::begin() {

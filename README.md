@@ -10,7 +10,7 @@ gfx v2 was compiled (into *gfx/libgfx.a*) using GCC 10.2.1 with the following fl
 
 For the compilation of the game itself, those flags were used:
 
-> -std=c++11 -Wall -Werror -pedantic-errors -Igfx -lX11 -lm -pthread -DNDEBUG
+> -std=c++11 -Wall -Werror -pedantic-errors -Lgfx -lgfx -lX11 -lm -pthread -DNDEBUG
 
 ## How to launch
 Open the executable file "snake". The game windows is supposed to appear immediately.

@@ -11,16 +11,16 @@ board.h
 /home/adar/git_repos/snake/board.h
 
 /home/adar/git_repos/snake/board.h
-vertex.h
-/home/adar/git_repos/snake/vertex.h
-snake.h
-/home/adar/git_repos/snake/snake.h
 vector
 -
 stdlib.h
 -
 ctime
 -
+vertex.h
+/home/adar/git_repos/snake/vertex.h
+snake.h
+/home/adar/git_repos/snake/snake.h
 
 /home/adar/git_repos/snake/exceptions.h
 exception
