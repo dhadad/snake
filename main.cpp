@@ -18,7 +18,8 @@ using std::string;
 
 std::mutex m;
 std::atomic<bool> done(false);
-static int speed = 350;
+static const int init_speed = 350; //milliseconds
+static const double speed_increase = 0.9;
 
 /* AUXILIARIES */
 
@@ -107,7 +108,7 @@ void closeGame(const char* message) {
 }
 
 /**
- * snakeEat: the snake steps into a fruit.
+ * snakeEat: the snake steps into a fruit. As a result, the score is updated.
  * @param s A reference to the snake object.
  * @param b A reference to the board object.
  * @param old_tail A reference to the vertex where the snake's old tail is located.
@@ -115,12 +116,16 @@ void closeGame(const char* message) {
  * after the current step.
  */
 void snakeEat(Snake& s, Board& b, const Vertex& old_tail, const Vertex& new_head) {
-	gfx_text("P", new_head.getX(), new_head.getY()); //Removes the fruit from the map
+	/** Remove the fruit from the map */
+	gfx_text("P", new_head.getX(), new_head.getY()); 
+	/** Move the snake */
 	s.advance();
 	b.update(new_head, SNAKE);
+	/** Update score and the snake length */
 	updatePrintedScore(s, BLANK);
-	s+=old_tail; //Increases by one
+	s+=old_tail; 
 	updatePrintedScore(s, WHITE);
+	/** Genereate a new fruit */
 	vector<int> fruit_coardinates = b.generateNewFruit();
 	setColor(WHITE);
 	gfx_text("P", fruit_coardinates[0]*jump, fruit_coardinates[1]*jump);
@@ -170,8 +175,9 @@ void snakeStep(Snake& s, Board& b, const Vertex& old_tail, const Vertex& new_hea
  * Stops when there are no lives left, or when the snakes exits the screen.
  * @param s A reference to the snake object.
  * @param b A reference to the board object.
+ * @param speed Integer represting the number of milliseconds between each step.
  */
-void advanceEverySec(Snake& s, Board& b) {
+void advanceEverySec(Snake& s, Board& b, int speed) {
 	while(!done.load()) {
 		m.lock();
 		try {
@@ -183,6 +189,7 @@ void advanceEverySec(Snake& s, Board& b) {
 			printSnake(s, BLANK);
 			if (b[coar_x][coar_y] == FRUIT) {
 				snakeEat(s, b, old_tail, new_head);	// Fruit in the next step
+				speed *= speed_increase;
 			} else if (b[coar_x][coar_y] == SNAKE) {
 				snakeSelfCross(s, b); // The snake crosses itself
 			} else {
@@ -231,14 +238,14 @@ int main() {
 	Snake s = Snake();
 	Board b = Board(s);
 	initBoard(s, b);
-	thread advancing(advanceEverySec, std::ref(s), std::ref(b));
+	thread advancing(advanceEverySec, std::ref(s), std::ref(b), init_speed);
 	advancing.detach();
 	while (!done.load()) {
 		thread get_input(waitForInput, std::ref(s));
 		if (get_input.joinable()) {
 			get_input.join();
 		}
-		std::this_thread::sleep_for(std::chrono::milliseconds(speed));
+		std::this_thread::sleep_for(std::chrono::milliseconds(init_speed));
 	}
 	gfx_close();
 	return 0;

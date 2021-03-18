@@ -16,6 +16,6 @@ For the compilation of the game itself, those flags were used:
 Open the executable file "snake". The game windows is supposed to appear immediately.
 
 ## Rules
-Navigation is done using the *'w', 'a', 's', 'd'* keys. Use *'q'* in order to quit and close the window. For each fruit you cross in your movement, one point will be added to your score. In the beginning of each game, you start with 3 lives. A life is deduced whenever the snake crosses itself. Once all the lives are over, the game ends. Moreover, whenever the snake exits the boundaries of the window, the game ends as well.
+Navigation is done using the *'w', 'a', 's', 'd'* keys. Use *'q'* in order to quit and close the window. For each fruit you cross in your movement, one point will be added to your score, but the speed will be increased too. In the beginning of each game, you start with 3 lives. A life is deduced whenever the snake crosses itself. Once all the lives are over, the game ends. Moreover, whenever the snake exits the boundaries of the window, the game ends as well.
 
 ![Screenshot](./screenshot.gif)
