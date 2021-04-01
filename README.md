@@ -9,11 +9,10 @@ gfx v2 was compiled (into *gfx/libgfx.a*) using GCC 10.2.1 with the following fl
 > -fPIC -c -lX11 -lm -pthread -DNDEBUG
 
 For the compilation of the game itself, those flags were used:
-
 > -std=c++11 -Wall -Werror -pedantic-errors -Lgfx -lgfx -lX11 -lm -pthread -DNDEBUG
 
-## How to launch
-Open the executable file "snake". The game windows is supposed to appear immediately.
+## How to Launch
+Open the executable file "snake". The game window is supposed to appear immediately.
 
 ## Rules
 Navigation is done using the *'w', 'a', 's', 'd'* keys. Use *'q'* in order to quit and close the window. For each fruit you cross in your movement, one point will be added to your score, but the speed will be increased too. In the beginning of each game, you start with 3 lives. A life is deduced whenever the snake crosses itself. Once all the lives are over, the game ends. Moreover, whenever the snake exits the boundaries of the window, the game ends as well.
