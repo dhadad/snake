@@ -19,7 +19,7 @@ using std::string;
 std::mutex m;
 std::atomic<bool> done(false);
 static const int init_speed = 350; //milliseconds
-static const double speed_increase = 0.9;
+static const double speed_increase = 0.95;
 
 /* AUXILIARIES */
 
@@ -192,6 +192,7 @@ void advanceEverySec(Snake& s, Board& b, int speed) {
 				speed *= speed_increase;
 			} else if (b[coar_x][coar_y] == SNAKE) {
 				snakeSelfCross(s, b); // The snake crosses itself
+				speed = init_speed;
 			} else {
 				snakeStep(s, b, old_tail, new_head); // A regular step
 			}
